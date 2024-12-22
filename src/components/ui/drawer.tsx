@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
 
@@ -14,11 +16,11 @@ const Drawer = ({
 )
 Drawer.displayName = "Drawer"
 
-const DrawerTrigger = DrawerPrimitive.Trigger
+const DrawerTrigger = DrawerPrimitive.Trigger as React.ForwardRefExoticComponent<React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Trigger>>
 
-const DrawerPortal = DrawerPrimitive.Portal
+const DrawerPortal = DrawerPrimitive.Portal as React.FC<React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Portal>>
 
-const DrawerClose = DrawerPrimitive.Close
+const DrawerClose = DrawerPrimitive.Close as React.ForwardRefExoticComponent<React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Close>>
 
 const DrawerOverlay = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Overlay>,
