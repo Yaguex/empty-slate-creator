@@ -26,8 +26,8 @@ export function EditValueModal({
 }: EditValueModalProps) {
   console.log("EditValueModal - Initial values:", { initialValue, initialNetFlow });
   
-  const [value, setValue] = useState(String(initialValue || 0));
-  const [netFlow, setNetFlow] = useState(String(initialNetFlow || 0));
+  const [value, setValue] = useState(() => String(initialValue));
+  const [netFlow, setNetFlow] = useState(() => String(initialNetFlow));
 
   const handleSave = () => {
     console.log("EditValueModal - Saving values:", { value, netFlow });

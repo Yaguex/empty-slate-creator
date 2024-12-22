@@ -73,10 +73,13 @@ export function PortfolioHistoryTable({ data }: PortfolioHistoryTableProps) {
   const handleEdit = (row: FormattedDataRow) => {
     console.log("Editing row:", row);
     if (row) {
+      const value = typeof row.value === 'number' ? row.value : 0;
+      const netFlow = typeof row.netFlow === 'number' ? row.netFlow : 0;
+      
       setEditingRow({
         ...row,
-        value: row.value || 0,
-        netFlow: row.netFlow || 0
+        value,
+        netFlow
       });
     }
   };
