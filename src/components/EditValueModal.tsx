@@ -13,16 +13,16 @@ interface EditValueModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (value: number, netFlow: number) => void;
-  initialValue: number;
-  initialNetFlow: number;
+  initialValue?: number;
+  initialNetFlow?: number;
 }
 
 export function EditValueModal({ 
   isOpen, 
   onClose, 
   onSave, 
-  initialValue,
-  initialNetFlow 
+  initialValue = 0,
+  initialNetFlow = 0
 }: EditValueModalProps) {
   const [value, setValue] = useState<string>(initialValue.toString());
   const [netFlow, setNetFlow] = useState<string>(initialNetFlow.toString());
