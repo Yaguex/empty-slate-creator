@@ -24,15 +24,15 @@ export function EditValueModal({
   initialValue = 0,
   initialNetFlow = 0
 }: EditValueModalProps) {
-  const [value, setValue] = useState<string>(initialValue.toString());
-  const [netFlow, setNetFlow] = useState<string>(initialNetFlow.toString());
+  const [value, setValue] = useState<string>(initialValue?.toString() || "0");
+  const [netFlow, setNetFlow] = useState<string>(initialNetFlow?.toString() || "0");
 
   const handleSave = () => {
     const numValue = parseFloat(value);
     const numNetFlow = parseFloat(netFlow);
     onSave(
-      isNaN(numValue) ? initialValue : numValue,
-      isNaN(numNetFlow) ? initialNetFlow : numNetFlow
+      isNaN(numValue) ? 0 : numValue,
+      isNaN(numNetFlow) ? 0 : numNetFlow
     );
     onClose();
   };

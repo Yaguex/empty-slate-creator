@@ -24,21 +24,26 @@ export function PortfolioHistoryTable({ data }: PortfolioHistoryTableProps) {
 
   const calculateMoMChange = (currentValue: number, previousValue: number) => {
     const gain = currentValue - previousValue;
-    const returnPercentage = (gain / previousValue) * 100;
+    const returnPercentage = previousValue !== 0 ? (gain / previousValue) * 100 : 0;
     return { gain, returnPercentage };
   };
 
   const calculateYTDChange = (currentValue: number, startOfYearValue: number) => {
     const gain = currentValue - startOfYearValue;
-    const returnPercentage = (gain / startOfYearValue) * 100;
+    const returnPercentage = startOfYearValue !== 0 ? (gain / startOfYearValue) * 100 : 0;
     return { gain, returnPercentage };
   };
 
   const getStartOfYearValue = (date: string) => {
-    const currentYear = parse(date, "yyyy-MM", new Date()).getFullYear();
-    const startOfYearDate = startOfYear(new Date(currentYear, 0)).toISOString().slice(0, 7);
-    const startOfYearDataEntry = data.find(entry => entry.date === startOfYearDate);
-    return startOfYearDataEntry?.value ?? data[data.length - 1].value;
+    try {
+      const currentYear = parse(date, "yyyy-MM", new Date()).getFullYear();
+      const startOfYearDate = startOfYear(new Date(currentYear, 0)).toISOString().slice(0, 7);
+      const startOfYearDataEntry = data.find(entry => entry.date === startOfYearDate);
+      return startOfYearDataEntry?.value ?? data[data.length - 1].value;
+    } catch (error) {
+      console.error("Error getting start of year value:", error);
+      return 0;
+    }
   };
 
   const formattedData = sortedData.map((entry, index) => {
@@ -69,6 +74,7 @@ export function PortfolioHistoryTable({ data }: PortfolioHistoryTableProps) {
   });
 
   const handleEdit = (row: FormattedDataRow) => {
+    console.log("Editing row:", row);
     setEditingRow(row);
   };
 
