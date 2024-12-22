@@ -122,7 +122,7 @@ export function PortfolioHistoryTable({ data }: PortfolioHistoryTableProps) {
           onClose={() => setEditingRow(null)}
           onSave={handleSave}
           initialValue={editingRow.value}
-          initialNetFlow={editingRow.netFlow}
+          initialNetFlow={editingRow.netFlow || 0}
         />
       )}
     </>
