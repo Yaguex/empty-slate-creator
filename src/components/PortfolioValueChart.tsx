@@ -26,9 +26,8 @@ export const PortfolioValueChart = ({ data }: Props) => {
     return <div>No data available to display.</div>;
   }
 
-  // Data should already be sorted in ascending order from the parent component
-  // We'll use it as is without re-sorting
-  console.log("PortfolioValueChart - Using pre-sorted data:", data);
+  // Use data directly without re-sorting since it's already sorted by the parent
+  console.log("PortfolioValueChart - Using data as provided:", data);
 
   // Enrich data with formatted labels
   const enrichedData = data.map((point) => {
