@@ -8,7 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
 
 interface PortfolioValueChartProps {
@@ -53,66 +53,61 @@ export function PortfolioValueChart({ data }: PortfolioValueChartProps) {
   }, [data]);
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Portfolio Value Over Time</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="h-[400px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={formattedData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid 
-                vertical={false}
-                strokeDasharray="3 3" 
-              />
-              <XAxis
-                dataKey="formattedDate"
-                tick={{ fill: '#888888', fontSize: 11 }}
-              />
-              <YAxis
-                domain={[domainPadding.min, domainPadding.max]}
-                tick={{ fill: '#888888', fontSize: 11 }}
-                tickFormatter={(value) => `$${value.toLocaleString()}`}
-              />
-              <Tooltip
-                content={({ active, payload, label }) => {
-                  if (active && payload && payload.length) {
-                    return (
-                      <div className="bg-white p-2 border border-gray-200 rounded shadow-lg">
-                        <p className="text-sm font-medium">{label}</p>
+    <div className="w-full">
+      <div className="h-[400px] w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={formattedData}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid 
+              vertical={false}
+              strokeDasharray="3 3" 
+            />
+            <XAxis
+              dataKey="formattedDate"
+              tick={{ fill: '#888888', fontSize: 11 }}
+            />
+            <YAxis
+              domain={[domainPadding.min, domainPadding.max]}
+              tick={{ fill: '#888888', fontSize: 11 }}
+              tickFormatter={(value) => `$${value.toLocaleString()}`}
+            />
+            <Tooltip
+              content={({ active, payload, label }) => {
+                if (active && payload && payload.length) {
+                  return (
+                    <div className="bg-white p-2 border border-gray-200 rounded shadow-lg">
+                      <p className="text-sm font-bold">{label}</p>
+                      <p className="text-sm">
+                        Value: {payload[0].payload.formattedValue}
+                      </p>
+                      {payload[0].payload.ytdReturn !== undefined && (
                         <p className="text-sm">
-                          Value: {payload[0].payload.formattedValue}
+                          YTD Return: {payload[0].payload.ytdReturn.toFixed(2)}%
                         </p>
-                        {payload[0].payload.ytdReturn !== undefined && (
-                          <p className="text-sm">
-                            YTD Return: {payload[0].payload.ytdReturn.toFixed(2)}%
-                          </p>
-                        )}
-                      </div>
-                    );
-                  }
-                  return null;
-                }}
-              />
-              <Line
-                type="monotone"
-                dataKey="value"
-                stroke="#8884d8"
-                strokeWidth={2}
-                dot={{ fill: '#8884d8' }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </CardContent>
-    </Card>
+                      )}
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            />
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke="#8884d8"
+              strokeWidth={2}
+              dot={{ fill: '#8884d8' }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
   );
 }
