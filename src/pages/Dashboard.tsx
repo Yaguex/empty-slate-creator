@@ -50,7 +50,7 @@ const Dashboard = () => {
         setPortfolios(portfolios || []);
 
         if (portfolios?.length) {
-          setSelectedPortfolioId(portfolios[0].id); // Select the first portfolio by default
+          setSelectedPortfolioId(portfolios[0].id);
         }
       } catch (err) {
         setError(err.message || "An error occurred while fetching portfolios.");
@@ -91,11 +91,15 @@ const Dashboard = () => {
     fetchMonthlyData();
   }, [selectedPortfolioId]);
 
-  // Changed the sorting for chart data to be ascending (oldest to newest)
+  // Sort data in ascending order (oldest to newest) for the chart
   const chartData = React.useMemo(() => {
     if (!monthlyData.length) return [];
-    const sorted = [...monthlyData].sort((a, b) => new Date(a.month).getTime() - new Date(b.month).getTime());
+    
+    const sorted = [...monthlyData].sort(
+      (a, b) => new Date(a.month).getTime() - new Date(b.month).getTime()
+    );
     console.log("Dashboard - Chart Data (Ascending Order):", sorted);
+    
     return sorted.map((entry) => ({
       date: entry.month,
       value: entry.balance,
@@ -105,8 +109,12 @@ const Dashboard = () => {
   // Keep table data sorting in descending order (newest to oldest)
   const tableData = React.useMemo(() => {
     if (!monthlyData.length) return [];
-    const sorted = [...monthlyData].sort((a, b) => new Date(b.month).getTime() - new Date(a.month).getTime());
+    
+    const sorted = [...monthlyData].sort(
+      (a, b) => new Date(b.month).getTime() - new Date(a.month).getTime()
+    );
     console.log("Dashboard - Table Data (Descending Order):", sorted);
+    
     return sorted.map((entry) => ({
       date: entry.month,
       value: entry.balance,
