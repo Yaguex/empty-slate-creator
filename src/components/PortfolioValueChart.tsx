@@ -83,25 +83,24 @@ export function PortfolioValueChart({ data }: PortfolioValueChartProps) {
                 tickFormatter={(value) => `$${value.toLocaleString()}`}
               />
               <Tooltip
-                formatter={(value: number, name: string, props: any) => {
-                  if (name === 'value') {
-                    return [
-                      new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0,
-                      }).format(value),
-                      "Value"
-                    ];
+                content={({ active, payload, label }) => {
+                  if (active && payload && payload.length) {
+                    return (
+                      <div className="bg-white p-2 border border-gray-200 rounded shadow-lg">
+                        <p className="text-sm font-medium">{label}</p>
+                        <p className="text-sm">
+                          Value: {payload[0].payload.formattedValue}
+                        </p>
+                        {payload[0].payload.ytdReturn !== undefined && (
+                          <p className="text-sm">
+                            YTD Return: {payload[0].payload.ytdReturn.toFixed(2)}%
+                          </p>
+                        )}
+                      </div>
+                    );
                   }
-                  // Handle YTD Return
-                  if (name === 'ytdReturn') {
-                    return [`${value.toFixed(2)}%`, "YTD Return"];
-                  }
-                  return [value, name];
+                  return null;
                 }}
-                labelFormatter={(label) => label}
               />
               <Line
                 type="monotone"
@@ -109,12 +108,6 @@ export function PortfolioValueChart({ data }: PortfolioValueChartProps) {
                 stroke="#8884d8"
                 strokeWidth={2}
                 dot={{ fill: '#8884d8' }}
-              />
-              <Line
-                type="monotone"
-                dataKey="ytdReturn"
-                stroke="transparent"
-                hide={true}
               />
             </LineChart>
           </ResponsiveContainer>
