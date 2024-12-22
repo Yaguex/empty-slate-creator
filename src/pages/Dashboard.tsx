@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MetricsCard } from "@/components/MetricsCard";
 import { PortfolioHistoryTable } from "@/components/PortfolioHistoryTable";
+import { PortfolioValueChart } from "@/components/PortfolioValueChart";
 import { supabase } from "@/integrations/supabase/supabaseClient";
 
 interface MonthlyData {
@@ -90,6 +91,21 @@ const Dashboard = () => {
     fetchMonthlyData();
   }, [selectedPortfolioId]);
 
+  // Sort data in ascending order (oldest to newest) for the chart
+  const chartData = React.useMemo(() => {
+    if (!monthlyData.length) return [];
+    
+    const sorted = [...monthlyData].sort(
+      (a, b) => new Date(a.month).getTime() - new Date(b.month).getTime()
+    );
+    console.log("Dashboard - Chart Data (Ascending Order):", sorted);
+    
+    return sorted.map((entry) => ({
+      date: entry.month,
+      value: entry.balance,
+    }));
+  }, [monthlyData]);
+
   // Keep table data sorting in descending order (newest to oldest)
   const tableData = React.useMemo(() => {
     if (!monthlyData.length) return [];
@@ -160,6 +176,10 @@ const Dashboard = () => {
           trend={ytdReturn >= 0 ? "up" : "down"}
           valueColor={ytdReturn >= 0 ? "text-green-600" : "text-red-600"}
         />
+      </div>
+
+      <div className="mb-8">
+        <PortfolioValueChart data={chartData} />
       </div>
 
       <div className="mb-8">
