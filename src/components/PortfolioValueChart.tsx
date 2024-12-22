@@ -26,14 +26,12 @@ export const PortfolioValueChart = ({ data }: Props) => {
     return <div>No data available to display.</div>;
   }
 
-  // Sort data in ascending order by date
-  const sortedData = [...data].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
-  console.log("PortfolioValueChart - Sorted Data (Ascending):", sortedData);
+  // Data should already be sorted in ascending order from the parent component
+  // We'll use it as is without re-sorting
+  console.log("PortfolioValueChart - Using pre-sorted data:", data);
 
   // Enrich data with formatted labels
-  const enrichedData = sortedData.map((point) => {
+  const enrichedData = data.map((point) => {
     const dateObj = new Date(point.date);
     return {
       ...point,
