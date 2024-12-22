@@ -15,6 +15,7 @@ interface PortfolioValueChartProps {
   data: Array<{
     date: string;
     value: number;
+    ytdReturn?: number;
   }>;
 }
 
@@ -36,6 +37,21 @@ export function PortfolioValueChart({ data }: PortfolioValueChartProps) {
 
   console.log("PortfolioValueChart - Formatted Data:", formattedData);
 
+  // Calculate domain padding (10% above max and below min)
+  const domainPadding = React.useMemo(() => {
+    if (!data.length) return { min: 0, max: 0 };
+    
+    const values = data.map(d => d.value);
+    const minValue = Math.min(...values);
+    const maxValue = Math.max(...values);
+    const range = maxValue - minValue;
+    
+    return {
+      min: minValue - (range * 0.1),
+      max: maxValue + (range * 0.1)
+    };
+  }, [data]);
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -53,25 +69,38 @@ export function PortfolioValueChart({ data }: PortfolioValueChartProps) {
                 bottom: 5,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid 
+                vertical={false}
+                strokeDasharray="3 3" 
+              />
               <XAxis
                 dataKey="formattedDate"
-                tick={{ fill: '#888888' }}
+                tick={{ fill: '#888888', fontSize: 11 }}
               />
               <YAxis
-                tick={{ fill: '#888888' }}
+                domain={[domainPadding.min, domainPadding.max]}
+                tick={{ fill: '#888888', fontSize: 11 }}
                 tickFormatter={(value) => `$${value.toLocaleString()}`}
               />
               <Tooltip
-                formatter={(value: number) => [
-                  new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  }).format(value),
-                  "Value"
-                ]}
+                formatter={(value: number, name: string, props: any) => {
+                  if (name === 'value') {
+                    return [
+                      new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      }).format(value),
+                      "Value"
+                    ];
+                  }
+                  // Handle YTD Return
+                  if (name === 'ytdReturn') {
+                    return [`${value.toFixed(2)}%`, "YTD Return"];
+                  }
+                  return [value, name];
+                }}
                 labelFormatter={(label) => label}
               />
               <Line
@@ -80,6 +109,12 @@ export function PortfolioValueChart({ data }: PortfolioValueChartProps) {
                 stroke="#8884d8"
                 strokeWidth={2}
                 dot={{ fill: '#8884d8' }}
+              />
+              <Line
+                type="monotone"
+                dataKey="ytdReturn"
+                stroke="transparent"
+                hide={true}
               />
             </LineChart>
           </ResponsiveContainer>

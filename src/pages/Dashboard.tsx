@@ -103,10 +103,10 @@ const Dashboard = () => {
     return sorted.map((entry) => ({
       date: entry.month,
       value: entry.balance,
+      ytdReturn: entry.ytd_return
     }));
   }, [monthlyData]);
 
-  // Keep table data sorting in descending order (newest to oldest)
   const tableData = React.useMemo(() => {
     if (!monthlyData.length) return [];
     
