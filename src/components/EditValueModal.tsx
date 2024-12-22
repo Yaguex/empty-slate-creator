@@ -13,37 +13,27 @@ interface EditValueModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (value: number, netFlow: number) => void;
-  initialValue?: number;
-  initialNetFlow?: number;
+  initialValue: number;
+  initialNetFlow: number;
 }
 
 export function EditValueModal({ 
   isOpen, 
   onClose, 
   onSave, 
-  initialValue,
-  initialNetFlow
+  initialValue = 0,
+  initialNetFlow = 0
 }: EditValueModalProps) {
   console.log("EditValueModal - Initial values:", { initialValue, initialNetFlow });
   
-  const [value, setValue] = useState<string>(() => {
-    if (initialValue === undefined || initialValue === null) return "0";
-    return initialValue.toString();
-  });
-  
-  const [netFlow, setNetFlow] = useState<string>(() => {
-    if (initialNetFlow === undefined || initialNetFlow === null) return "0";
-    return initialNetFlow.toString();
-  });
+  const [value, setValue] = useState(() => initialValue.toString());
+  const [netFlow, setNetFlow] = useState(() => initialNetFlow.toString());
 
   const handleSave = () => {
     console.log("EditValueModal - Saving values:", { value, netFlow });
-    const numValue = parseFloat(value);
-    const numNetFlow = parseFloat(netFlow);
-    onSave(
-      isNaN(numValue) ? 0 : numValue,
-      isNaN(numNetFlow) ? 0 : numNetFlow
-    );
+    const numValue = parseFloat(value) || 0;
+    const numNetFlow = parseFloat(netFlow) || 0;
+    onSave(numValue, numNetFlow);
     onClose();
   };
 

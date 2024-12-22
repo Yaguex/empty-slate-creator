@@ -1,9 +1,6 @@
 import { format, parse, startOfYear } from "date-fns";
 import { Card } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-} from "@/components/ui/table";
+import { Table, TableBody } from "@/components/ui/table";
 import { EditValueModal } from "./EditValueModal";
 import { PortfolioTableRow } from "./PortfolioTableRow";
 import { PortfolioTableHeader } from "./PortfolioTableHeader";
