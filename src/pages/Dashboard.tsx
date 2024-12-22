@@ -91,7 +91,7 @@ const Dashboard = () => {
     fetchMonthlyData();
   }, [selectedPortfolioId]);
 
-  // Ensure data is sorted only after fetching
+  // Changed the sorting for chart data to be ascending (oldest to newest)
   const chartData = React.useMemo(() => {
     if (!monthlyData.length) return [];
     const sorted = [...monthlyData].sort((a, b) => new Date(a.month).getTime() - new Date(b.month).getTime());
@@ -102,6 +102,7 @@ const Dashboard = () => {
     }));
   }, [monthlyData]);
 
+  // Keep table data sorting in descending order (newest to oldest)
   const tableData = React.useMemo(() => {
     if (!monthlyData.length) return [];
     const sorted = [...monthlyData].sort((a, b) => new Date(b.month).getTime() - new Date(a.month).getTime());
