@@ -18,23 +18,25 @@ interface Props {
 }
 
 export const PortfolioValueChart = ({ data }: Props) => {
-  // Log received data
-  console.log("PortfolioValueChart - Received Data:", data);
+  console.log("PortfolioValueChart - Initial data:", data);
 
   if (!data || !data.length) {
     console.warn("PortfolioValueChart - No data to display.");
     return <div>No data available to display.</div>;
   }
 
-  // Use data directly without re-sorting since it's already sorted by the parent
-  console.log("PortfolioValueChart - Using data as provided:", data);
+  // Sort data in ascending order (oldest to newest)
+  const sortedData = [...data].sort((a, b) => 
+    new Date(a.date).getTime() - new Date(b.date).getTime()
+  );
+  console.log("PortfolioValueChart - Sorted data (ascending):", sortedData);
 
   // Enrich data with formatted labels
-  const enrichedData = data.map((point) => {
+  const enrichedData = sortedData.map((point) => {
     const dateObj = new Date(point.date);
     return {
       ...point,
-      formattedDate: format(dateObj, "MMM yyyy"), // Example: "Jan 2023"
+      formattedDate: format(dateObj, "MMM yyyy"),
       formattedValue: new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
@@ -46,7 +48,7 @@ export const PortfolioValueChart = ({ data }: Props) => {
   // Calculate Y-axis domain with padding
   const maxValue = Math.max(...enrichedData.map((d) => d.value));
   const minValue = Math.min(...enrichedData.map((d) => d.value));
-  const padding = (maxValue - minValue) * 0.1; // Add 10% padding
+  const padding = (maxValue - minValue) * 0.1;
   const yDomain = [minValue - padding, maxValue + padding];
 
   // Custom Tooltip Component
