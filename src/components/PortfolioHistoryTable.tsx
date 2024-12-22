@@ -72,7 +72,13 @@ export function PortfolioHistoryTable({ data }: PortfolioHistoryTableProps) {
 
   const handleEdit = (row: FormattedDataRow) => {
     console.log("Editing row:", row);
-    setEditingRow(row);
+    if (row) {
+      setEditingRow({
+        ...row,
+        value: row.value || 0,
+        netFlow: row.netFlow || 0
+      });
+    }
   };
 
   const handleSave = (newValue: number, newNetFlow: number) => {
@@ -122,7 +128,7 @@ export function PortfolioHistoryTable({ data }: PortfolioHistoryTableProps) {
           onClose={() => setEditingRow(null)}
           onSave={handleSave}
           initialValue={editingRow.value}
-          initialNetFlow={editingRow.netFlow || 0}
+          initialNetFlow={editingRow.netFlow}
         />
       )}
     </>
