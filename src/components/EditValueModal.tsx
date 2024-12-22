@@ -21,13 +21,23 @@ export function EditValueModal({
   isOpen, 
   onClose, 
   onSave, 
-  initialValue = 0,
-  initialNetFlow = 0
+  initialValue,
+  initialNetFlow
 }: EditValueModalProps) {
-  const [value, setValue] = useState<string>(initialValue?.toString() || "0");
-  const [netFlow, setNetFlow] = useState<string>(initialNetFlow?.toString() || "0");
+  console.log("EditValueModal - Initial values:", { initialValue, initialNetFlow });
+  
+  const [value, setValue] = useState<string>(() => {
+    if (initialValue === undefined || initialValue === null) return "0";
+    return initialValue.toString();
+  });
+  
+  const [netFlow, setNetFlow] = useState<string>(() => {
+    if (initialNetFlow === undefined || initialNetFlow === null) return "0";
+    return initialNetFlow.toString();
+  });
 
   const handleSave = () => {
+    console.log("EditValueModal - Saving values:", { value, netFlow });
     const numValue = parseFloat(value);
     const numNetFlow = parseFloat(netFlow);
     onSave(
