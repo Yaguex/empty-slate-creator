@@ -48,5 +48,5 @@
 }
 
 .card-gradient {
-  @apply bg-gradient-to-br from-white to-secondary/80 backdrop-blur-sm border-[5px] border-border/50;
+  @apply bg-gradient-to-br from-white to-secondary/80 backdrop-blur-sm border border-border/50;
 }
